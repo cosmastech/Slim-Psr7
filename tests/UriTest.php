@@ -33,6 +33,14 @@ class UriTest extends TestCase
 
     public function testSupportOtherSchemes()
     {
+        $services = array('http', 'ftp', 'ssh', 'telnet', 'imap',
+            'smtp', 'nicname', 'gopher', 'finger', 'pop3', 'www');
+
+        foreach ($services as $service) {
+            $port = getservbyname($service, 'tcp');
+            echo $service . ": " . $port . "<br />\n";
+        }
+
         $wsUri = new class ('ws', 'example.com') extends Uri {
             public const SUPPORTED_SCHEMES = [
                 'ws' => 80,

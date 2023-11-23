@@ -114,6 +114,15 @@ class Uri implements UriInterface
     }
 
     /**
+     * @param  array<int, string>  $schemes
+     * @return void
+     */
+    public static function setSupportedSchemes(array $schemes): void
+    {
+        static::$SUPPORTED_SCHEMES = $schemes;
+    }
+
+    /**
      * Filter Uri scheme.
      *
      * @param  mixed $scheme Raw Uri scheme.
@@ -130,9 +139,9 @@ class Uri implements UriInterface
         }
 
         $scheme = str_replace('://', '', strtolower($scheme));
-        if (!key_exists($scheme, static::SUPPORTED_SCHEMES)) {
+        if (!key_exists($scheme, static::$SUPPORTED_SCHEMES)) {
             throw new InvalidArgumentException(
-                'Uri scheme must be one of: "' . implode('", "', array_keys(static::SUPPORTED_SCHEMES)) . '"'
+                'Uri scheme must be one of: "' . implode('", "', array_keys(static::$SUPPORTED_SCHEMES)) . '"'
             );
         }
 
@@ -286,7 +295,7 @@ class Uri implements UriInterface
      */
     protected function hasStandardPort(): bool
     {
-        return static::SUPPORTED_SCHEMES[$this->scheme] === $this->port;
+        return static::$SUPPORTED_SCHEMES[$this->scheme] === $this->port;
     }
 
     /**
